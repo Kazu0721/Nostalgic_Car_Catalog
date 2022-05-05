@@ -26,18 +26,18 @@ fun ToyotaCarsScreen(navController: NavController, name: ToyotaModel) {
 
     Log.d("NAME: ", "$name")
 
-    var tsList: ArrayList<Bitmap> = ArrayList()
+    val tsList: ArrayList<Bitmap> = ArrayList()
     val context = LocalContext.current
     val am = context.assets
     var inp: InputStream
 
-   var files = am.list("${name.name}")
+   val files = am.list("${name.name}")
     for (i in files!!.indices){
         inp = am.open("${name.name}" + "/" + files[i])
         val bitmap = BitmapFactory.decodeStream(inp)
         tsList.add(i, bitmap)
     }
-    Scaffold(topBar = { Toyota2300GTTopBar(navController, name) }) {
+    Scaffold(topBar = { ToyotaCarsTopBar(navController, name) }) {
         LazyColumn(
            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly
@@ -62,7 +62,7 @@ fun PhotoItem(item: Bitmap) {
     }
 }
 @Composable
-fun Toyota2300GTTopBar(navController: NavController, name: ToyotaModel) {
+fun ToyotaCarsTopBar(navController: NavController, name: ToyotaModel) {
     TopAppBar(
         navigationIcon = {
             IconButton(onClick = {
