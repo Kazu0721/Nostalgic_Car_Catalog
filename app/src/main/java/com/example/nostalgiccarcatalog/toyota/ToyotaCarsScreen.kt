@@ -56,7 +56,7 @@ fun PhotoItem(item: Bitmap) {
             Alignment.Center
             ) {
             Image(
-                item.asImageBitmap(), contentDescription = "ZZZ"
+                item.asImageBitmap(), contentDescription = null
             )
         }
     }
