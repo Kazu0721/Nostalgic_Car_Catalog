@@ -6,10 +6,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,7 +17,7 @@ import androidx.navigation.NavController
 
 @Composable
 fun ToyotaScreen(navController: NavController){
-    Scaffold(topBar = { ToyotaTopBar() }){
+    Scaffold(topBar = { ToyotaTopBar(navController) }){
         Box(modifier = Modifier.fillMaxSize()) {
             LazyColumn{
                 items( toyotaModelList){list -> ToyotaList(navController, items = list)}
@@ -32,10 +31,6 @@ fun ToyotaList(navController: NavController, items:ToyotaModel) {
         .fillMaxWidth()
         .padding(horizontal = 8.dp, vertical = 4.dp)
         .clickable {navController.navigate("toyotaCar/${items.name}")
-       /*     when (items.name) {
-                "TOYOTA 2300GT" -> {navController.navigate("toyotaCar/${items.name}")}
-            }
-            */
         },
         shape = RoundedCornerShape(10),
         backgroundColor = Color.Green
@@ -48,8 +43,16 @@ fun ToyotaList(navController: NavController, items:ToyotaModel) {
 }
 
 @Composable
-fun ToyotaTopBar() {
-    TopAppBar(modifier = Modifier.fillMaxWidth(),
+fun ToyotaTopBar(navController: NavController) {
+    TopAppBar(
+        navigationIcon = {
+            IconButton(onClick = {
+                navController.popBackStack()
+            }) {
+                Icon(Icons.Filled.ArrowBack, "Back")
+            }
+        },
+        modifier = Modifier.fillMaxWidth(),
         backgroundColor = Color.DarkGray,
         contentColor = Color.White,
         title = { Text("TOYOTA")},
