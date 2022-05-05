@@ -37,7 +37,7 @@ fun ToyotaCarsScreen(navController: NavController, name: ToyotaModel) {
         val bitmap = BitmapFactory.decodeStream(inp)
         tsList.add(i, bitmap)
     }
-    Scaffold(topBar = { ToyotaCarsTopBar(navController, name) }) {
+    Scaffold(topBar = {CarsTopBar(navController, name) }) {
         LazyColumn(
            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly
@@ -62,7 +62,7 @@ fun PhotoItem(item: Bitmap) {
     }
 }
 @Composable
-fun ToyotaCarsTopBar(navController: NavController, name: ToyotaModel) {
+fun CarsTopBar(navController: NavController, name: ToyotaModel) {
     TopAppBar(
         navigationIcon = {
             IconButton(onClick = {
