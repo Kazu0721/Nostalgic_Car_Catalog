@@ -26,12 +26,12 @@ fun ToyotaCarsScreen(navController: NavController, name: ToyotaModel) {
 
     Log.d("NAME: ", "$name")
 
-    var tsList: ArrayList<Bitmap> = ArrayList()
+    val tsList: ArrayList<Bitmap> = ArrayList()
     val context = LocalContext.current
     val am = context.assets
     var inp: InputStream
 
-   var files = am.list("${name.name}")
+   val files = am.list("${name.name}")
     for (i in files!!.indices){
         inp = am.open("${name.name}" + "/" + files[i])
         val bitmap = BitmapFactory.decodeStream(inp)
