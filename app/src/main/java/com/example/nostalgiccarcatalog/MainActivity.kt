@@ -12,13 +12,10 @@ import com.example.nostalgiccarcatalog.screen.Screen
 import com.example.nostalgiccarcatalog.ui.theme.NostalgicCarCatalogTheme
 import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val model = ViewModelProvider(this)[CarsViewModel::class.java]
-
         setContent {
             NostalgicCarCatalogTheme {
                 // A surface container using the 'background' color from the theme
@@ -26,7 +23,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Screen(model)
+                    Screen()
                 }
             }
         }

@@ -10,18 +10,14 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.nostalgiccarcatalog.CarsViewModel
 import com.example.nostalgiccarcatalog.model.ToyotaModel
 
 @Composable
-fun ToyotaScreen(navController: NavController, model: CarsViewModel){
+fun ToyotaScreen(navController: NavController, model: ToyotaViewModel){
 
     Scaffold(topBar = { ToyotaTopBar(navController) }){
         Box(modifier = Modifier.fillMaxSize()) {
