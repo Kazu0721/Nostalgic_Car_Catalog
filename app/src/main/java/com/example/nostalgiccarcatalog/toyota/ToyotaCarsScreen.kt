@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,11 +42,17 @@ fun ToyotaCarsScreen(navController: NavController, name: ToyotaModel) {
         tsList.add(i, bitmap)
     }
     Scaffold(topBar = {CarsTopBar(navController, name) }) {
-        LazyColumn(
-           modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly
-        ) {
-            items(tsList) { item -> PhotoItem( item = item)
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(Color.DarkGray)
+        ){
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceEvenly
+            ) {
+                items(tsList) { item ->
+                    PhotoItem(item = item)
+                }
             }
         }
     }
@@ -53,10 +60,9 @@ fun ToyotaCarsScreen(navController: NavController, name: ToyotaModel) {
 
 @Composable
 fun PhotoItem(item: Bitmap) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.DarkGray)) {
-        Box(modifier = Modifier.fillMaxWidth()
+    Column {
+        Box(modifier = Modifier
+            .fillMaxWidth()
             .padding(horizontal = 4.dp, vertical = 4.dp),
             Alignment.Center
             ) {
@@ -70,7 +76,7 @@ fun PhotoItem(item: Bitmap) {
 }
 @Composable
 fun CarsTopBar(navController: NavController, name: ToyotaModel) {
-    TopAppBar(
+    TopAppBar(modifier = Modifier.fillMaxWidth(), backgroundColor = Color.DarkGray, contentColor = Color.White, elevation = 0.dp,
         navigationIcon = {
             IconButton(onClick = {
                 navController.popBackStack()
@@ -78,10 +84,12 @@ fun CarsTopBar(navController: NavController, name: ToyotaModel) {
                 Icon(Icons.Filled.ArrowBack, "Back")
             }
         },
-        modifier = Modifier.fillMaxWidth(),
-        backgroundColor = Color.DarkGray,
-        contentColor = Color.White,
         title = { Text("${name.name}") },
-        elevation = 0.dp
+        actions = {
+            IconButton(onClick = { navController.navigate("toyotaCarsReference/${name.name}") }) {
+                Log.d("NAME: ", "${name.name}")
+                Icon(Icons.Filled.Share, contentDescription = "Reference" )
+            }
+        }
     )
 }

@@ -10,6 +10,8 @@ import androidx.navigation.navArgument
 import com.example.nostalgiccarcatalog.toyota.ToyotaViewModel
 import com.example.nostalgiccarcatalog.makes.MakesScreen
 import com.example.nostalgiccarcatalog.model.ToyotaModel
+import com.example.nostalgiccarcatalog.model.ToyotaWebView
+import com.example.nostalgiccarcatalog.toyota.ToyotaCarsReferenceScreen
 import com.example.nostalgiccarcatalog.toyota.ToyotaScreen
 import com.example.nostalgiccarcatalog.toyota.ToyotaCarsScreen
 
@@ -28,10 +30,26 @@ fun Screen(){
         composable("toyotaCar/{name}",
             arguments = listOf(navArgument("name") { type = NavType.StringType })
         ) { backStackEntry ->
-            val name = backStackEntry.arguments?.getString("name") ?: 0
+            val name = backStackEntry.arguments?.getString("name") ?: "Nothing"
 
-            ToyotaCarsScreen(navController = navController, name = ToyotaModel(name as String))
-
+            ToyotaCarsScreen(navController = navController, name = ToyotaModel(name))
         }
+
+        composable("toyotaCarsReference/{name}",
+            arguments = listOf(navArgument("name") { type = NavType.StringType })
+        ) { backStackEntry ->
+            //val model = hiltViewModel<ToyotaViewModel>()
+            val name = backStackEntry.arguments?.getString("name") ?: ""
+
+            ToyotaCarsReferenceScreen(navController = navController, name = ToyotaModel(name))
+        }
+        composable("webView/{url}",
+            arguments = listOf(navArgument("url") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val url = backStackEntry.arguments?.getString("url") ?: ""
+
+            WebViewScreen(navController = navController,  url)
+        }
+
     }
 }
