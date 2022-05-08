@@ -1,6 +1,5 @@
 package com.example.nostalgiccarcatalog.toyota
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,19 +17,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.nostalgiccarcatalog.model.ToyotaModel
 import com.example.nostalgiccarcatalog.model.ToyotaWebView
-import com.example.nostalgiccarcatalog.model.referenceList
-import java.net.URL
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
+
 
 @Composable
-fun ToyotaCarsReferenceScreen(navController: NavController, name: ToyotaModel){
+fun ToyotaCarsReferenceScreen(navController: NavController, name: ToyotaModel, model: ToyotaViewModel){
 
     val carName = name.name
+    val referenceList = model.referenceList
 
     Scaffold(topBar = {ReferenceTopBar(navController, carName)}) {
         DataItems(carName, referenceList){url -> navController.navigate("webView/${url.url}")}
-
     }
 }
 

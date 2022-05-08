@@ -11,7 +11,6 @@ import java.net.URL
 
 @Composable
 fun WebViewScreen(navController: NavController, url: String){
-
     AndroidView(
         factory = ::WebView,
         update = { webView ->

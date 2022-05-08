@@ -38,10 +38,10 @@ fun Screen(){
         composable("toyotaCarsReference/{name}",
             arguments = listOf(navArgument("name") { type = NavType.StringType })
         ) { backStackEntry ->
-            //val model = hiltViewModel<ToyotaViewModel>()
+            val model = hiltViewModel<ToyotaViewModel>()
             val name = backStackEntry.arguments?.getString("name") ?: ""
 
-            ToyotaCarsReferenceScreen(navController = navController, name = ToyotaModel(name))
+            ToyotaCarsReferenceScreen(navController = navController, name = ToyotaModel(name), model)
         }
         composable("webView/{url}",
             arguments = listOf(navArgument("url") { type = NavType.StringType })
