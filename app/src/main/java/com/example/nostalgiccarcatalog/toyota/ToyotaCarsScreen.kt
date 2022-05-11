@@ -35,9 +35,11 @@ fun ToyotaCarsScreen(navController: NavController, name: ToyotaModel) {
     val am = context.assets
     var inp: InputStream
 
-   val files = am.list("${name.name}")
+    val  carName = name.name
+
+   val files = am.list(carName)
     for (i in files!!.indices){
-        inp = am.open("${name.name}" + "/" + files[i])
+        inp = am.open(carName + "/" + files[i])
         val bitmap = BitmapFactory.decodeStream(inp)
         tsList.add(i, bitmap)
     }
@@ -76,6 +78,8 @@ fun PhotoItem(item: Bitmap) {
 }
 @Composable
 fun CarsTopBar(navController: NavController, name: ToyotaModel) {
+    val carName = name.name
+
     TopAppBar(modifier = Modifier.fillMaxWidth(), backgroundColor = Color.DarkGray, contentColor = Color.White, elevation = 0.dp,
         navigationIcon = {
             IconButton(onClick = {
@@ -84,10 +88,10 @@ fun CarsTopBar(navController: NavController, name: ToyotaModel) {
                 Icon(Icons.Filled.ArrowBack, "Back")
             }
         },
-        title = { Text("${name.name}") },
+        title = { Text(carName) },
         actions = {
             IconButton(onClick = { navController.navigate("toyotaCarsReference/${name.name}") }) {
-                Log.d("NAME: ", "${name.name}")
+                Log.d("NAME: ", carName)
                 Icon(Icons.Filled.Share, contentDescription = "Reference" )
             }
         }
