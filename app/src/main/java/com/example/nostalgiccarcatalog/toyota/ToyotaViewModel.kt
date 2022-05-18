@@ -1,9 +1,15 @@
 package com.example.nostalgiccarcatalog.toyota
 
+import android.content.ContentValues
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import com.example.nostalgiccarcatalog.model.ModelUrl
 import com.example.nostalgiccarcatalog.model.ToyotaModel
 import com.example.nostalgiccarcatalog.model.ToyotaWebView
+import com.example.nostalgiccarcatalog.model.urlList
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -11,17 +17,34 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ToyotaViewModel @Inject constructor() : ViewModel() {
-    val toyotaModelList = mutableStateListOf<ToyotaModel>(
+    val toyotaModelList = mutableStateListOf(
         ToyotaModel("TOYOTA 2300GT"),
-        ToyotaModel("TOYOTA SPORTS800")
+        ToyotaModel("TOYOTA SPORTS 800")
     )
 
     private val dataOne = URLEncoder.encode("https://www.autocar.jp/post/409929", StandardCharsets.UTF_8.toString())
     private val dataTwo = URLEncoder.encode("https://kurukura.jp/snasna/170309.html", StandardCharsets.UTF_8.toString())
 
-    val referenceList = mutableStateListOf<ToyotaWebView>(
-        ToyotaWebView("$dataOne" ),
-        ToyotaWebView("$dataTwo")
+    val referenceList = mutableStateListOf(
+        ToyotaWebView(dataOne),
+        ToyotaWebView(dataTwo)
     )
+
+    fun getUrl(itemName: String){
+        val name = itemName.lowercase().replace(" ","")
+        val db = Firebase.firestore
+        db.collection("$name")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                val url =document.getString("imageUrl")
+                    url?.let { urlList.add(ModelUrl(it)) }
+                 }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(ContentValues.TAG, "Error getting documents.", exception)
+            }
+    }
 }
+
 

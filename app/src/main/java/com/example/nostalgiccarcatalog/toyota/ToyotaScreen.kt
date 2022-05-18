@@ -17,6 +17,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.nostalgiccarcatalog.model.ToyotaModel
 
@@ -33,9 +34,12 @@ fun ToyotaScreen(navController: NavController, model: ToyotaViewModel){
 }
 @Composable
 fun ToyotaList(navController: NavController, items: ToyotaModel) {
+    val model = hiltViewModel<ToyotaViewModel>()
+    val itemName = items.name
     Card(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)
             .clickable {
-                navController.navigate("toyotaCar/${items.name}")
+                navController.navigate("toyotaCar/$itemName")
+                model.getUrl(itemName)
             },
         shape = RoundedCornerShape(10),
         backgroundColor = Color.Blue
