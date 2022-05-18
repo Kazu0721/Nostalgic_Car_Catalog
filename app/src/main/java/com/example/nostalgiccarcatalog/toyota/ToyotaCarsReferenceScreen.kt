@@ -14,7 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.nostalgiccarcatalog.FirestoreViewModel
 import com.example.nostalgiccarcatalog.model.ToyotaModel
 import com.example.nostalgiccarcatalog.model.ToyotaWebView
 
@@ -54,7 +56,7 @@ fun ReferenceList(dataItem: ToyotaWebView, itemSelected: (url: ToyotaWebView) ->
     Card(modifier = Modifier
         .fillMaxWidth()
         .padding(horizontal = 8.dp, vertical = 4.dp)
-        .clickable{itemSelected(dataItem)},
+        .clickable { itemSelected(dataItem) },
         shape = RoundedCornerShape(10),
         backgroundColor = Color.Blue
     ) {
@@ -70,10 +72,12 @@ fun ReferenceList(dataItem: ToyotaWebView, itemSelected: (url: ToyotaWebView) ->
 
 @Composable
 fun ReferenceTopBar(navController: NavController, carName: String) {
+    val model = hiltViewModel<FirestoreViewModel>()
     TopAppBar(modifier = Modifier.fillMaxWidth(), backgroundColor = Color.DarkGray, contentColor = Color.White, elevation = 0.dp,
         navigationIcon = {
             IconButton(onClick = {
                 navController.popBackStack()
+                model.getUrl(carName)
             }) {
                 Icon(Icons.Filled.ArrowBack, "Back")
             }

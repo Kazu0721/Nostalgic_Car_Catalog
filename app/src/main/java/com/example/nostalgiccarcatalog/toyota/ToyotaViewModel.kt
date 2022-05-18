@@ -30,21 +30,6 @@ class ToyotaViewModel @Inject constructor() : ViewModel() {
         ToyotaWebView(dataTwo)
     )
 
-    fun getUrl(itemName: String){
-        val name = itemName.lowercase().replace(" ","")
-        val db = Firebase.firestore
-        db.collection("$name")
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                val url =document.getString("imageUrl")
-                    url?.let { urlList.add(ModelUrl(it)) }
-                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.w(ContentValues.TAG, "Error getting documents.", exception)
-            }
-    }
 }
 
 
