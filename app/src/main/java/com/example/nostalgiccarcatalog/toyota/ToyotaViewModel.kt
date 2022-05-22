@@ -1,15 +1,10 @@
 package com.example.nostalgiccarcatalog.toyota
 
-import android.content.ContentValues
-import android.util.Log
+
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
-import com.example.nostalgiccarcatalog.model.ModelUrl
 import com.example.nostalgiccarcatalog.model.ToyotaModel
 import com.example.nostalgiccarcatalog.model.ToyotaWebView
-import com.example.nostalgiccarcatalog.model.urlList
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets

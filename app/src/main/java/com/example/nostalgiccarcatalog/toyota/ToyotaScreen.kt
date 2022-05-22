@@ -1,6 +1,7 @@
 package com.example.nostalgiccarcatalog.toyota
 
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,20 +14,23 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.nostalgiccarcatalog.FirestoreViewModel
 import com.example.nostalgiccarcatalog.model.ToyotaModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
-fun ToyotaScreen(navController: NavController, model: ToyotaViewModel){
+ fun ToyotaScreen(navController: NavController, model: ToyotaViewModel, name: String){
 
     Scaffold(topBar = { ToyotaTopBar(navController) }){
-        Box(modifier = Modifier.fillMaxSize().background(Color.DarkGray)) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(Color.DarkGray)) {
             LazyColumn{
                 items(model.toyotaModelList){list -> ToyotaList(navController, items = list)}
             }
@@ -35,13 +39,23 @@ fun ToyotaScreen(navController: NavController, model: ToyotaViewModel){
 }
 @Composable
 fun ToyotaList(navController: NavController, items: ToyotaModel) {
-    val model = hiltViewModel<FirestoreViewModel>()
+    val model2 = hiltViewModel<FirestoreViewModel>()
     val itemName = items.name
-    Card(modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)
-            .clickable {
-                navController.navigate("toyotaCar/$itemName")
-                model.getUrl(itemName)
-            },
+
+    val context = Dispatchers.Default
+    val scope = CoroutineScope(context)
+
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 8.dp, vertical = 4.dp)
+        .clickable {
+                scope.launch {
+                        model2.getUrl(itemName)
+                    launch (Dispatchers.Main){
+                        navController.navigate("toyotaCar/$itemName")
+                    }
+                }
+        },
         shape = RoundedCornerShape(10),
         backgroundColor = Color.Blue
     ) {

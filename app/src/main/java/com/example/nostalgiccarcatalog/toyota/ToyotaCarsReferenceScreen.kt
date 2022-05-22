@@ -19,6 +19,9 @@ import androidx.navigation.NavController
 import com.example.nostalgiccarcatalog.FirestoreViewModel
 import com.example.nostalgiccarcatalog.model.ToyotaModel
 import com.example.nostalgiccarcatalog.model.ToyotaWebView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -73,11 +76,16 @@ fun ReferenceList(dataItem: ToyotaWebView, itemSelected: (url: ToyotaWebView) ->
 @Composable
 fun ReferenceTopBar(navController: NavController, carName: String) {
     val model = hiltViewModel<FirestoreViewModel>()
+    val context = Dispatchers.Default
+    val scope = CoroutineScope(context)
     TopAppBar(modifier = Modifier.fillMaxWidth(), backgroundColor = Color.DarkGray, contentColor = Color.White, elevation = 0.dp,
         navigationIcon = {
             IconButton(onClick = {
                 navController.popBackStack()
-                model.getUrl(carName)
+                scope.launch {
+                    model.getUrl(carName)
+                }
+
             }) {
                 Icon(Icons.Filled.ArrowBack, "Back")
             }

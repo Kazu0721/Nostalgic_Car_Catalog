@@ -22,9 +22,10 @@ fun Screen(){
         composable("main") {
             MakesScreen(navController = navController)
         }
-        composable("toyota") {
+        composable("toyota",) {
+            val name: String = "TOYOTA"
              val model = hiltViewModel<ToyotaViewModel>()
-            ToyotaScreen(navController = navController, model=model)
+            ToyotaScreen(navController = navController, model=model, name)
         }
 
         composable("toyotaCar/{name}",

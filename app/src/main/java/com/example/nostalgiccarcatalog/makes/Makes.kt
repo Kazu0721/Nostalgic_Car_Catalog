@@ -49,10 +49,11 @@ fun MakesScreen(navController: NavController) {
                     .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly) {
                     Box(modifier = Modifier
-                        .clickable(onClick = {navController.navigate("toyota")})
+                        .clickable(onClick = { navController.navigate("toyota") })
                         .padding(horizontal = 24.dp, vertical = 8.dp)
                         .clip(RoundedCornerShape(15))) {
-                        Image(painter = painterResource(id = R.drawable.toyota),  contentDescription ="Toyota" )
+                            Image(painter = painterResource(id = R.drawable.toyota),  contentDescription ="Toyota" )
+
                     }
                     Box(modifier = Modifier
                         .clickable(onClick = {})

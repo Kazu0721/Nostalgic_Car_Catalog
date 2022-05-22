@@ -1,6 +1,7 @@
 package com.example.nostalgiccarcatalog.toyota
 
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,7 +11,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,12 +23,13 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.nostalgiccarcatalog.model.ToyotaModel
-import com.example.nostalgiccarcatalog.model.urlList
-
+import com.example.nostalgiccarcatalog.model.ModelUrl
+import com.example.nostalgiccarcatalog.model.carList
 
 @Composable
-fun ToyotaCarsScreen(navController: NavController, name: ToyotaModel) {
+ fun ToyotaCarsScreen(navController: NavController, name: ToyotaModel) {
 
+    val list = carList.observeAsState(listOf<ModelUrl>())
     Scaffold(topBar = {CarsTopBar(navController, name) }) {
         Box(modifier = Modifier
             .fillMaxSize()
@@ -37,16 +40,17 @@ fun ToyotaCarsScreen(navController: NavController, name: ToyotaModel) {
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                items(urlList) {item ->
-                    PhotoItem(item.imageUrl)
+                items(list.value) { item -> PhotoItem(item.imageUrl)
                 }
             }
+
         }
     }
 }
 
 @Composable
 fun PhotoItem(item: String) {
+
     Column {
         Box(modifier = Modifier
             .fillMaxWidth()
@@ -60,7 +64,7 @@ fun PhotoItem(item: String) {
                     .build()
             )
             Image(
-                painter = painter, contentDescription = null,
+                painter = painter, contentDescription = "Car",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
@@ -76,7 +80,6 @@ fun CarsTopBar(navController: NavController, name: ToyotaModel) {
             IconButton(onClick = {
                 navController.popBackStack()
             }) {
-                urlList.clear()
                 Icon(Icons.Filled.ArrowBack, "Back")
             }
         },
