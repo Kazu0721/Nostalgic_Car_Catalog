@@ -7,16 +7,15 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil.compose.rememberAsyncImagePainter
 import com.example.nostalgiccarcatalog.R
 
 @Composable
@@ -27,91 +26,45 @@ fun MakesScreen(navController: NavController) {
             .background(Color.DarkGray)
             .fillMaxSize())
         {
-            Column(modifier = Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.SpaceEvenly ){
-                Row(modifier = Modifier
-                    .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                    Box(modifier = Modifier
-                        .clickable(onClick = {})
-                        .padding(horizontal = 24.dp, vertical = 8.dp)
-                        .clip(RoundedCornerShape(15))) {
-                        Image(painter = painterResource(id = R.drawable.bmw),  contentDescription ="bmw" )
-                    }
-                    Box(modifier = Modifier
-                        .clickable(onClick = {})
-                        .padding(horizontal = 24.dp, vertical = 8.dp)
-                        .clip(RoundedCornerShape(15))) {
-                            Image(painter = painterResource(id = R.drawable.lamborghini), contentDescription ="Lamborgini")
-                        }
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Row{
+                    CarComposable(resourceId =  R.drawable.bmw, text = "BMW", navController, modifier = Modifier
+                        .weight(1f)
+                        .padding(10.dp))
+                    CarComposable(resourceId =  R.drawable.lotus, text = "LOTUS", navController, modifier = Modifier
+                        .weight(1f)
+                        .padding(10.dp))
                 }
-                Row(modifier = Modifier
-                    .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly) {
-                    Box(modifier = Modifier
-                        .clickable(onClick = { navController.navigate("toyota") })
-                        .padding(horizontal = 24.dp, vertical = 8.dp)
-                        .clip(RoundedCornerShape(15))) {
-                            Image(painter = painterResource(id = R.drawable.toyota),  contentDescription ="Toyota" )
-
-                    }
-                    Box(modifier = Modifier
-                        .clickable(onClick = {})
-                        .padding(horizontal = 24.dp, vertical = 8.dp)
-                        .clip(RoundedCornerShape(15))) {
-                        Image(painter = painterResource(id = R.drawable.porsche),  contentDescription ="porsche" )
-                    }
-                }
-                Row(modifier = Modifier
-                    .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly) {
-                    Box(modifier = Modifier
-                        .clickable(onClick = {})
-                        .padding(horizontal = 24.dp, vertical = 8.dp)
-                        .clip(RoundedCornerShape(15))) {
-                        Image(painter = painterResource(id = R.drawable.ferrari),  contentDescription ="Ferrari" )
-                    }
-                    Box(modifier = Modifier
-                        .clickable(onClick = {})
-                        .padding(horizontal = 24.dp, vertical = 8.dp)
-                        .clip(RoundedCornerShape(15))) {
-                        Image(painter = painterResource(id = R.drawable.ford),  contentDescription ="Ford" )
-                    }
-                }
-                Row(modifier = Modifier
-                    .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly) {
-                    Box(modifier = Modifier
-                        .clickable(onClick = {})
-                        .padding(horizontal = 24.dp, vertical = 8.dp)
-                        .clip(RoundedCornerShape(15))) {
-                        Image(painter = painterResource(id = R.drawable.astonmartin),  contentDescription ="AstonMartin" )
-                    }
-                    Box(modifier = Modifier
-                        .clickable(onClick = {})
-                        .padding(horizontal = 24.dp, vertical = 8.dp)
-                        .clip(RoundedCornerShape(15))) {
-                        Image(painter = painterResource(id = R.drawable.lancia),  contentDescription ="Lancia" )
-                    }
-                }
-                Row(modifier = Modifier
-                    .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly) {
-                    Box(modifier = Modifier
-                        .clickable(onClick = {})
-                        .padding(horizontal = 24.dp, vertical = 8.dp)
-                        .clip(RoundedCornerShape(15))) {
-                        Image(painter = painterResource(id = R.drawable.chevrolet),  contentDescription ="Chevrolet" )
-                    }
-                    Box(modifier = Modifier
-                        .clickable(onClick = {})
-                        .padding(horizontal = 24.dp, vertical = 8.dp)
-                        .clip(RoundedCornerShape(15))) {
-                        Image(painter = painterResource(id = R.drawable.lotus),  contentDescription ="Lotus" )
-                    }
+                Row{
+                    CarComposable(resourceId =  R.drawable.toyota, text = "TOYOTA", navController, modifier = Modifier
+                        .weight(1f)
+                        .padding(10.dp))
+                    CarComposable(resourceId =  R.drawable.detomaso, text = "DETOMASO", navController, modifier = Modifier
+                        .weight(1f)
+                        .padding(10.dp))
                 }
             }
         }
+    }
+}
+
+@Composable
+fun CarComposable(resourceId: Int, text: String, navController: NavController, modifier: Modifier) {
+    Column(modifier = modifier,horizontalAlignment = Alignment.CenterHorizontally)
+    {
+        Box(modifier = Modifier
+            .clickable(onClick = { navController.navigate("$text")})
+            .padding(horizontal = 24.dp, vertical = 8.dp)
+            .clip(RoundedCornerShape(15)))
+        {
+            Image(painter = painterResource(id = resourceId),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f),
+                contentScale = ContentScale.Crop)
+        }
+        Text(text = text, color = Color.White,)
     }
 }
 

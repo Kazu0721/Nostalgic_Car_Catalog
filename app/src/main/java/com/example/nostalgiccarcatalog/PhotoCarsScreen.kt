@@ -1,7 +1,6 @@
-package com.example.nostalgiccarcatalog.toyota
+package com.example.nostalgiccarcatalog
 
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -22,15 +21,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.example.nostalgiccarcatalog.model.ToyotaModel
-import com.example.nostalgiccarcatalog.model.ModelUrl
-import com.example.nostalgiccarcatalog.model.carList
+import com.example.nostalgiccarcatalog.lotus.EuropaModelUrl
+import com.example.nostalgiccarcatalog.lotus.europaCarList
+import com.example.nostalgiccarcatalog.toyota.ModelUrl
+import com.example.nostalgiccarcatalog.toyota.toyotaCarList
 
 @Composable
- fun ToyotaCarsScreen(navController: NavController, name: ToyotaModel) {
+ fun  PhotoCarsScreen(navController: NavController, itemName: String) {
 
-    val list = carList.observeAsState(listOf<ModelUrl>())
-    Scaffold(topBar = {CarsTopBar(navController, name) }) {
+    val list = toyotaCarList.observeAsState(listOf<ModelUrl>())
+    val europaList = europaCarList.observeAsState(listOf<EuropaModelUrl>())
+
+    Scaffold(topBar = {CarsTopBar(navController, itemName) }) {
         Box(modifier = Modifier
             .fillMaxSize()
             .background(Color.DarkGray)
@@ -40,10 +42,11 @@ import com.example.nostalgiccarcatalog.model.carList
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                items(list.value) { item -> PhotoItem(item.imageUrl)
+                when(itemName){
+                    "TOYOTA 2300GT" ->{ items(list.value) { item -> PhotoItem(item = item.imageUrl)} }
+                    "LOTUS EUROPA" -> {items(europaList.value){item -> PhotoItem(item = item.imageUrl)}}
                 }
             }
-
         }
     }
 }
@@ -72,8 +75,7 @@ fun PhotoItem(item: String) {
     }
 }
 @Composable
-fun CarsTopBar(navController: NavController, name: ToyotaModel) {
-    val carName = name.name
+fun CarsTopBar(navController: NavController, itemName: String) {
 
     TopAppBar(modifier = Modifier.fillMaxWidth(), backgroundColor = Color.DarkGray, contentColor = Color.White, elevation = 0.dp,
         navigationIcon = {
@@ -83,9 +85,9 @@ fun CarsTopBar(navController: NavController, name: ToyotaModel) {
                 Icon(Icons.Filled.ArrowBack, "Back")
             }
         },
-        title = { Text(carName) },
+        title = { Text(itemName) },
         actions = {
-            IconButton(onClick = { navController.navigate("toyotaCarsReference/${name.name}") }) {
+            IconButton(onClick = {navController.navigate("carsReference/${itemName}") }) {
                 Icon(Icons.Filled.Share, contentDescription = "Reference" )
             }
         }
