@@ -1,4 +1,4 @@
-package com.example.nostalgiccarcatalog.toyota
+package com.example.nostalgiccarcatalog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,38 +16,39 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.nostalgiccarcatalog.FirestoreViewModel
-import com.example.nostalgiccarcatalog.model.ToyotaModel
-import com.example.nostalgiccarcatalog.model.ToyotaWebView
+import com.example.nostalgiccarcatalog.lotus.LotusViewModel
+import com.example.nostalgiccarcatalog.toyota.ToyotaViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 @Composable
-fun ToyotaCarsReferenceScreen(navController: NavController, name: ToyotaModel, model: ToyotaViewModel){
+fun CarsReferenceScreen(navController: NavController, name: String){
+    val model = hiltViewModel<ToyotaViewModel>()
+    val referenceList = model.reference2300GTList
 
-    val carName = name.name
-    val referenceList = model.referenceList
+    val europaModel = hiltViewModel<LotusViewModel>()
+    val europaReferenceList = europaModel.europaWebList
 
-    Scaffold(topBar = {ReferenceTopBar(navController, carName)}) {
-        DataItems(carName, referenceList){url -> navController.navigate("webView/${url.url}")}
+    Scaffold(topBar = {ReferenceTopBar(navController, name)}) {
+        when(name){
+            "TOYOTA 2300GT" -> {DataItems(referenceList){url -> navController.navigate("webView/${url}")}}
+            "LOTUS EUROPA" -> {DataItems(europaReferenceList){url -> navController.navigate("webView/${url}")}}
+        }
     }
 }
 
 @Composable
-fun DataItems(carName: String, datas: List<ToyotaWebView>, itemSelected:  (url: ToyotaWebView) -> Unit) {
+fun DataItems(dataList: List<String>, itemSelected:  (String) -> Unit) {
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color.DarkGray)) {
         Column {
-            Text(text = "I used it as a reference.", color = Color.White)
+            Text(text = " I used it as a reference.", color = Color.White)
             LazyColumn{
-                when(carName) {
-                    "TOYOTA 2300GT" -> {
-                        items(datas){dataItem -> ReferenceList(dataItem, itemSelected)}
-                    }
-                }
+                        items(dataList){dataItem -> ReferenceList(dataItem, itemSelected)
+                        }
             }
         }
     }
@@ -55,7 +56,7 @@ fun DataItems(carName: String, datas: List<ToyotaWebView>, itemSelected:  (url: 
 }
 
 @Composable
-fun ReferenceList(dataItem: ToyotaWebView, itemSelected: (url: ToyotaWebView) -> Unit) {
+fun ReferenceList(dataItem: String, itemSelected: (String) -> Unit) {
     Card(modifier = Modifier
         .fillMaxWidth()
         .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -65,7 +66,7 @@ fun ReferenceList(dataItem: ToyotaWebView, itemSelected: (url: ToyotaWebView) ->
     ) {
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
         {
-            Text(dataItem.url,
+            Text(dataItem,
                 fontFamily = FontFamily.SansSerif,
                 color = Color.White
             )
@@ -82,9 +83,6 @@ fun ReferenceTopBar(navController: NavController, carName: String) {
         navigationIcon = {
             IconButton(onClick = {
                 navController.popBackStack()
-                scope.launch {
-                    model.getUrl(carName)
-                }
 
             }) {
                 Icon(Icons.Filled.ArrowBack, "Back")
