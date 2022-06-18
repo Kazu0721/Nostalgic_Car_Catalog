@@ -39,7 +39,7 @@ fun MakesScreen(navController: NavController) {
                     CarComposable(resourceId =  R.drawable.toyota, text = "TOYOTA", navController, modifier = Modifier
                         .weight(1f)
                         .padding(10.dp))
-                    CarComposable(resourceId =  R.drawable.detomaso, text = "DETOMASO", navController, modifier = Modifier
+                    CarComposable(resourceId =  R.drawable.detomaso, text = "DE TOMASO", navController, modifier = Modifier
                         .weight(1f)
                         .padding(10.dp))
                 }
