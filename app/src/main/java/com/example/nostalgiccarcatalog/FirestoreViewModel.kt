@@ -4,6 +4,9 @@ import android.content.ContentValues
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.nostalgiccarcatalog.detomaso.PanteraModelUrl
+import com.example.nostalgiccarcatalog.detomaso.panteraCarList
+import com.example.nostalgiccarcatalog.detomaso.panteraUrlList
 import com.example.nostalgiccarcatalog.lotus.EuropaModelUrl
 import com.example.nostalgiccarcatalog.lotus.europaCarList
 import com.example.nostalgiccarcatalog.lotus.europaUrlList
@@ -20,6 +23,7 @@ import javax.inject.Inject
 class FirestoreViewModel @Inject constructor(): ViewModel() {
     suspend fun getUrl(itemName: String){
         val name = itemName.lowercase().replace(" ","")
+        Log.d("CAR_NAME", "$name")
         viewModelScope.launch{
             launch {
                 val db = Firebase.firestore
@@ -28,16 +32,25 @@ class FirestoreViewModel @Inject constructor(): ViewModel() {
                     .get()
                     .addOnSuccessListener { result ->
                         for (document in result) {
-                            val url =document.getString("imageUrl")
+                            val url = document.getString("imageUrl")
 
-                            when(itemName){
-                                "TOYOTA 2300GT" ->{ url?.let { urlList.add(ModelUrl(it)) }
-                                    toyotaCarList.value = urlList}
-                                "LOTUS EUROPA" -> {url?.let { europaUrlList.add(EuropaModelUrl(it))}
-                                    europaCarList.value = europaUrlList}
+                            when (itemName) {
+                                "TOYOTA 2300GT" -> {
+                                    url?.let { urlList.add(ModelUrl(it)) }
+                                    toyotaCarList.value = urlList
+                                }
+                                "LOTUS EUROPA" -> {
+                                    url?.let { europaUrlList.add(EuropaModelUrl(it)) }
+                                    europaCarList.value = europaUrlList
+                                }
+                                "DE TOMASO PANTERA" -> {
+                                    url?.let { panteraUrlList.add(PanteraModelUrl(it)) }
+                                    panteraCarList.value = panteraUrlList
+                                }
                             }
                         }
                     }
+
                     .addOnFailureListener { exception ->
                         Log.w(ContentValues.TAG, "Error getting documents.", exception)
                     }

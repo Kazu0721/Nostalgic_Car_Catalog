@@ -2,6 +2,7 @@ package com.example.nostalgiccarcatalog
 
 
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,6 +19,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.nostalgiccarcatalog.detomaso.DeTomasoModel
+import com.example.nostalgiccarcatalog.detomaso.DeTomasoViewModel
+import com.example.nostalgiccarcatalog.detomaso.panteraUrlList
 import com.example.nostalgiccarcatalog.lotus.LotusModel
 import com.example.nostalgiccarcatalog.lotus.LotusViewModel
 import com.example.nostalgiccarcatalog.lotus.europaUrlList
@@ -33,6 +37,7 @@ import kotlinx.coroutines.launch
 
     val toyotaViewModel = hiltViewModel<ToyotaViewModel>()
     val lotusViewModel = hiltViewModel<LotusViewModel>()
+    val detomasoViewModel = hiltViewModel<DeTomasoViewModel>()
 
     Scaffold(topBar = { CarTopBar(navController, name) }){
         Box(modifier = Modifier
@@ -46,9 +51,48 @@ import kotlinx.coroutines.launch
                     "LOTUS" -> {
                         items(lotusViewModel.lotusModelList){list -> LotusNameList(navController, items = list)}
                     }
+                    "DE TOMASO" -> {
+                        items(detomasoViewModel.detomasoModelList){list -> DeTomasoNameList(navController, items = list)}
+                    }
                 }
 
             }
+        }
+    }
+}
+
+@Composable
+fun DeTomasoNameList(navController: NavController, items: DeTomasoModel) {
+    val model = hiltViewModel<FirestoreViewModel>()
+    val itemName = items.name
+
+    Log.d("PANTERA_NAME", "$itemName")
+
+    val context = Dispatchers.Default
+    val scope = CoroutineScope(context)
+
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 8.dp, vertical = 4.dp)
+        .clickable {
+            scope.launch {
+                panteraUrlList.clear()
+                model.getUrl(itemName)
+                launch(Dispatchers.Main) {
+                    navController.navigate("itemsPhoto/$itemName")
+                }
+            }
+        },
+        shape = RoundedCornerShape(10),
+        backgroundColor = Color.Blue
+    ) {
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+        {
+            Text(
+                items.name,
+                fontFamily = FontFamily.SansSerif,
+                color = Color.White
+            )
         }
     }
 }
@@ -100,6 +144,7 @@ fun ToyotaNameList(navController: NavController, items: ToyotaModel) {
         .padding(horizontal = 8.dp, vertical = 4.dp)
         .clickable {
             scope.launch {
+                urlList.clear()
                 model2.getUrl(itemName)
                 launch(Dispatchers.Main) {
                     navController.navigate("itemsPhoto/$itemName")

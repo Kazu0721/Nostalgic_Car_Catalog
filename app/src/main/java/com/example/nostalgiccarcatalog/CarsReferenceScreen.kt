@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.nostalgiccarcatalog.detomaso.DeTomasoViewModel
 import com.example.nostalgiccarcatalog.lotus.LotusViewModel
 import com.example.nostalgiccarcatalog.toyota.ToyotaViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -31,10 +32,14 @@ fun CarsReferenceScreen(navController: NavController, name: String){
     val europaModel = hiltViewModel<LotusViewModel>()
     val europaReferenceList = europaModel.europaWebList
 
+    val panteraModel = hiltViewModel<DeTomasoViewModel>()
+    val panteraReferenceList = panteraModel.referencePanteraList
+
     Scaffold(topBar = {ReferenceTopBar(navController, name)}) {
         when(name){
             "TOYOTA 2300GT" -> {DataItems(referenceList){url -> navController.navigate("webView/${url}")}}
             "LOTUS EUROPA" -> {DataItems(europaReferenceList){url -> navController.navigate("webView/${url}")}}
+            "DE TOMASO PANTERA" -> {DataItems(panteraReferenceList){url -> navController.navigate("webView/${url}")}}
         }
     }
 }

@@ -21,6 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.example.nostalgiccarcatalog.animation.LoadingAnimation
+import com.example.nostalgiccarcatalog.detomaso.PanteraModelUrl
+import com.example.nostalgiccarcatalog.detomaso.panteraCarList
 import com.example.nostalgiccarcatalog.lotus.EuropaModelUrl
 import com.example.nostalgiccarcatalog.lotus.europaCarList
 import com.example.nostalgiccarcatalog.toyota.ModelUrl
@@ -31,13 +34,14 @@ import com.example.nostalgiccarcatalog.toyota.toyotaCarList
 
     val list = toyotaCarList.observeAsState(listOf<ModelUrl>())
     val europaList = europaCarList.observeAsState(listOf<EuropaModelUrl>())
+    val panteraList = panteraCarList.observeAsState(listOf<PanteraModelUrl>())
 
     Scaffold(topBar = {CarsTopBar(navController, itemName) }) {
         Box(modifier = Modifier
             .fillMaxSize()
             .background(Color.DarkGray)
         ){
-
+            LoadingAnimation()
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceEvenly
@@ -45,6 +49,7 @@ import com.example.nostalgiccarcatalog.toyota.toyotaCarList
                 when(itemName){
                     "TOYOTA 2300GT" ->{ items(list.value) { item -> PhotoItem(item = item.imageUrl)} }
                     "LOTUS EUROPA" -> {items(europaList.value){item -> PhotoItem(item = item.imageUrl)}}
+                    "DE TOMASO PANTERA" -> {items(panteraList.value){item -> PhotoItem(item = item.imageUrl)}}
                 }
             }
         }
