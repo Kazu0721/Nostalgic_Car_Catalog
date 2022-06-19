@@ -55,7 +55,6 @@ import kotlinx.coroutines.launch
                         items(detomasoViewModel.detomasoModelList){list -> DeTomasoNameList(navController, items = list)}
                     }
                 }
-
             }
         }
     }
